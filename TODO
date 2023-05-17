@@ -1,0 +1,6 @@
+TODO: Conv2d pooling (TF2)
+TODO: 通过parse xml文件来构建网络与设置参数
+decay (cosine decay with warm-up?), l2 penalty, gradient clipping
+adam, rmsprop, preprocessing(Normalization)
+train_validation split, data_feeder, early_stopping, callback
+TODO: 可视化
