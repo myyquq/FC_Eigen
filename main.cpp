@@ -21,7 +21,7 @@ int main() {
     model.add(new Input({784}));
     model.add(new Dense(128, "relu", 5e-1));
     model.add(new Dropout(0.5));
-    model.add(new Dense(10, "softmax", 2.5e-1));
+    model.add(new Dense(10, "softmax", 2e-1));
     model.compile(new Optimizer::SGD(), new Loss::MeanSquaredError());
     model.summary();
 
@@ -42,7 +42,7 @@ int main() {
 //        );
 //    }
 
-    fmt::print("\nPress C to clear the canvas.\n");
+    fmt::print("\nPress C to clear the canvas, press Esc to exit.\n");
     Matrix canvas = Matrix::Zero(28 * 28, 28 * 28);
     int pred_cnt = 0;
     Painter::draw(784, 784, canvas, [&canvas, &model, &pred_cnt]() {
