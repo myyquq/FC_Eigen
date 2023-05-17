@@ -20,14 +20,17 @@ add_subdirectory(
 #find_package(Eigen3 REQUIRED)
 #include_directories(${EIGEN3_INCLUDE_DIRS})
 
+find_package(OpenCV REQUIRED)
+
 file(GLOB HEADERS "*.hpp" "*.h")
 add_executable(
         MNIST
         main.cpp
         ${HEADERS}
-)
+        painter.hpp)
 
 target_link_libraries(
         MNIST
         fmt::fmt
+        ${OpenCV_LIBS}
 )

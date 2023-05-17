@@ -104,6 +104,30 @@ namespace Utils {
         return result;
     }
 
+    Matrix resize(const Matrix &m, int h, int w) {
+        Matrix result(h, w);
+        for (int i = 0; i < h; ++i) {
+            int x = i * m.rows() / h;
+            for (int j = 0; j < w; ++j) {
+                int y = j * m.cols() / w;
+                result(i, j) = m(x, y);
+            }
+        }
+        return result;
+    }
+
+    Matrix reshape(const Matrix &m, std::pair<int, int> shape) {
+        auto &[h, w] = shape;
+        if (h * w != m.size()) {
+            throw std::runtime_error(fmt::format("reshape: shape ({}, {}) cannot match size {}", h, w, m.size()));
+        }
+        Matrix result(h, w);
+        for (int i = 0; i < h * w; ++i) {
+            result(i) = m(i / m.cols(), i % m.cols());  /// col-major
+        }
+        return result;
+    }
+
 }
 
 #endif //MNIST_UTILS_HPP

@@ -3,6 +3,7 @@
 #include "Model.hpp"
 #include "dataloader.hpp"
 #include "Utils.hpp"
+#include "painter.hpp"
 
 using Layer::Dense;
 using Layer::Input;
@@ -14,31 +15,49 @@ int main() {
     train_data /= 255.;   /// preprocessing
     test_data /= 255.;
 
+
     fmt::print("\n");
     auto model = Model::Sequential();
     model.add(new Input({784}));
-    model.add(new Dense(128, "relu", 2e-1));
+    model.add(new Dense(128, "relu", 5e-1));
     model.add(new Dropout(0.5));
-    model.add(new Dense(10, "softmax", 5e-2));
+    model.add(new Dense(10, "softmax", 2.5e-1));
     model.compile(new Optimizer::SGD(), new Loss::MeanSquaredError());
     model.summary();
 
     fmt::print("\n");
-    model.fit(train_data, train_label, 100, 32);
+    model.fit(train_data, train_label, 50, 32);
 
-    auto test_pred = model.predict(test_data);
-    fmt::print("\ntest accuracy: {:.4f}%\n", Utils::accuracy(test_pred, test_label) * 100.);
-    fmt::print("test loss: {:.6f}\n", Loss::MeanSquaredError::loss(test_pred, test_label));
-    auto test_pred_label = Utils::argmax(test_pred, 1);
-    auto test_label_label = Utils::argmax(test_label, 1);
-    fmt::print("First 50 test samples:\n");
-    for (int i = 0; i < 50; ++i) {
-        fmt::print("label: {}, pred: {}, {}\n",
-                   test_label_label(i),
-                   test_pred_label(i),
-                   (test_pred_label(i) == test_label_label(i) ? "correct" : "WRONG")
-        );
-    }
+//    auto test_pred = model.predict(test_data);
+//    fmt::print("\ntest accuracy: {:.4f}%\n", Utils::accuracy(test_pred, test_label) * 100.);
+//    fmt::print("test loss: {:.6f}\n", Loss::MeanSquaredError::loss(test_pred, test_label));
+//    auto test_pred_label = Utils::argmax(test_pred, 1);
+//    auto test_label_label = Utils::argmax(test_label, 1);
+//    fmt::print("First 50 test samples:\n");
+//    for (int i = 0; i < 50; ++i) {
+//        fmt::print("label: {}, pred: {}, {}\n",
+//                   test_label_label(i),
+//                   test_pred_label(i),
+//                   (test_pred_label(i) == test_label_label(i) ? "correct" : "WRONG")
+//        );
+//    }
+
+    fmt::print("\nPress C to clear the canvas.\n");
+    Matrix canvas = Matrix::Zero(28 * 28, 28 * 28);
+    int pred_cnt = 0;
+    Painter::draw(784, 784, canvas, [&canvas, &model, &pred_cnt]() {
+        Matrix resized = Utils::resize(canvas, 28, 28) / 255.;
+        resized = Utils::reshape(resized, {1, 28 * 28});
+//        for (int i = 0; i < 28; ++i) {
+//            for (int j = 0; j < 28; ++j) {
+//                fmt::print("{:3d} ", (int) (resized(0, i * 28 + j)));
+//            }
+//            fmt::print("\n");
+//        }
+        Matrix pred = model.predict(resized);
+        fmt::print("{}th prediction: {}\n", ++pred_cnt, Utils::argmax(pred, 1)(0));
+    });
+
 
 
     /**
