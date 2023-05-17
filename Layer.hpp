@@ -16,7 +16,6 @@ namespace Layer {
     using Eigen::Dynamic;
     using Eigen::AutoOrder;
 
-
     class Layer {
     public:
         Layer(string name = "Layer") : name_(std::move(name)) {}
@@ -168,7 +167,7 @@ namespace Layer {
             if (train) {
                 std::random_device rd;
                 std::mt19937 gen(rd());
-                std::bernoulli_distribution dist(1 - rate_);
+                std::bernoulli_distribution dist(1. - rate_);
                 mask_ = Matrix::Zero(x.rows(), x.cols()).unaryExpr([&](value_type _) -> value_type {
                     return dist(gen);
                 });

@@ -2,8 +2,8 @@
 // Created by myyquq on 2023/4/2.
 //
 
-#ifndef NUMCX_DATALOADER_HPP
-#define NUMCX_DATALOADER_HPP
+#ifndef MNIST_DATALOADER_HPP
+#define MNIST_DATALOADER_HPP
 
 #include "config.h"
 #include "fmt/core.h"
@@ -99,4 +99,4 @@ namespace dataloader {
     }
 }
 
-#endif //NUMCX_DATALOADER_HPP
+#endif //MNIST_DATALOADER_HPP

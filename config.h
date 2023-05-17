@@ -33,4 +33,5 @@ using Matrix = Eigen::MatrixXf;
 using Vector = Eigen::VectorXf;
 
 
+
 #endif //MNIST_CONFIG_H
