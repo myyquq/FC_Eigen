@@ -26,7 +26,7 @@ int main() {
     model.summary();
 
     fmt::print("\n");
-    model.fit(train_data, train_label, 50, 32);
+    model.fit(train_data, train_label, 100, 32);
 
 //    auto test_pred = model.predict(test_data);
 //    fmt::print("\ntest accuracy: {:.4f}%\n", Utils::accuracy(test_pred, test_label) * 100.);
