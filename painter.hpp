@@ -5,9 +5,9 @@
 #ifndef MNIST_PAINTER_HPP
 #define MNIST_PAINTER_HPP
 
-#include "config.h"
-#include "opencv2/opencv.hpp"
+#include <opencv2/opencv.hpp>
 #include <functional>
+#include "config.h"
 
 namespace Painter {
 

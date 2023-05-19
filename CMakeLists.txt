@@ -1,11 +1,16 @@
 cmake_minimum_required(VERSION 3.25)
-project(MNIST)
 
+set(PROJECT_NAME MNIST)
+set(VCPKG_DIR "C:/dev/vcpkg")
+
+project(${PROJECT_NAME})
 set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_TOOLCHAIN_FILE "C:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
+
+
+set(CMAKE_TOOLCHAIN_FILE "${VCPKG_DIR}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
 
 if(CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
-    set(OpenCV_DIR "C:/dev/vcpkg/buildtrees/opencv4/x64-windows-dbg")
+    set(OpenCV_DIR "${VCPKG_DIR}/buildtrees/opencv4/x64-windows-dbg")
 elseif(CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Release"))
     if(MSVC)
         set(CMAKE_EXE_LINKER_FLAGS /MANIFEST:NO)
@@ -13,7 +18,7 @@ elseif(CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Release"))
     else()
         set(CMAKE_CXX_FLAGS "$ENV{CXXFLAGS} -O3 -mavx -mfma -ffast-math")
     endif()
-    set(OpenCV_DIR "C:/dev/vcpkg/buildtrees/opencv4/x64-windows-rel")
+    set(OpenCV_DIR "${VCPKG_DIR}/buildtrees/opencv4/x64-windows-rel")
 else()
     message("Unknown build type:${CMAKE_BUILD_TYPE}")
 endif()
@@ -29,20 +34,24 @@ add_subdirectory(
 
 find_package(OpenCV REQUIRED HINTS ${OpenCV_DIR})
 include_directories(${OpenCV_INCLUDE_DIRS})
+link_libraries(${OpenCV_LIBS})
+message("OpenCV_INCLUDE_DIRS:${OpenCV_INCLUDE_DIRS}")
+message("OpenCV_LIBS:${OpenCV_LIBS}")
 
 find_package(Threads REQUIRED)
 
 file(GLOB HEADERS "*.hpp" "*.h")
+
 add_executable(
-        MNIST
+        ${PROJECT_NAME}
         main.cpp
         ${HEADERS}
 )
 
 target_link_libraries(
-        MNIST
-        PUBLIC
-        fmt::fmt
+        ${PROJECT_NAME}
+        PRIVATE
         ${OpenCV_LIBS}
+        fmt::fmt
         Threads::Threads
 )
