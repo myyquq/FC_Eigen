@@ -19,11 +19,12 @@
 #include <random>
 #include <stdexcept>
 #include <chrono>
+#include <vector>
 
 
-using          value_type       = float;      /// 矩阵底层数据结构
+using          value_type       = float;      /// 矩阵元素类型
 constexpr auto EPS              = 1e-6;       /// 精度
-constexpr int  PROGRESS_BAR_LEN = 35;   /// 进度条长度
+constexpr int  PROGRESS_BAR_LEN = 35;         /// 进度条长度
 using          Shape            = std::vector<int>;
 using std::string;
 using std::cout;

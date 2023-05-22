@@ -33,11 +33,11 @@ namespace Painter {
         canvas = cv::Scalar(255, 255, 255);
     }
 
-    void draw(int width, int height, Matrix &data, const std::function<void()> &notify) {
-        WIDTH = width;
+    void draw(int height, int width, Matrix &data, const std::function<void()> &notify) {
         HEIGHT = height;
+        WIDTH = width;
 
-        canvas = cv::Mat(WIDTH, HEIGHT, CV_8UC3, cv::Scalar(255, 255, 255));
+        canvas = cv::Mat(HEIGHT, WIDTH, CV_8UC3, cv::Scalar(255, 255, 255));
         cv::String windowName = "Canvas";
         brushColor = cv::Scalar(0, 0, 0);
         cv::namedWindow(windowName);
@@ -47,9 +47,9 @@ namespace Painter {
             cv::Mat canvasGray;
             cv::cvtColor(canvas, canvasGray, cv::COLOR_BGR2GRAY);
             cv::Mat canvasArray = canvasGray > 0;
-            data = Matrix::Zero(WIDTH, HEIGHT);
-            for (int i = 0; i < WIDTH; i++) {
-                for (int j = 0; j < HEIGHT; j++) {
+            data = Matrix::Zero(HEIGHT, WIDTH);
+            for (int i = 0; i < HEIGHT; i++) {
+                for (int j = 0; j < WIDTH; j++) {
                     data(i, j) = 255.f - canvasArray.at<uchar>(i, j);
                 }
             }

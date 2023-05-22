@@ -19,17 +19,16 @@ namespace Layer {
     class Layer {
     public:
         Layer(string name = "Layer") : name_(std::move(name)) {}
-        virtual Matrix forward(const Matrix &x, bool train) = 0;
-        virtual Matrix backward(const Matrix &x) = 0;
+        virtual inline Matrix forward(const Matrix &x, bool is_training) = 0;
+        virtual inline Matrix backward(const Matrix &x) = 0;
         virtual std::vector<int> input_shape() = 0;
         virtual std::vector<int> output_shape() = 0;
         virtual int64_t parameters() = 0;
 
-        string name() {
+        string name() const {
             return name_;
         }
 
-//    protected:
         string name_;
         Activation::Activation *activation_;
         Shape input_shape_;
@@ -47,11 +46,11 @@ namespace Layer {
                 throw std::invalid_argument("Input shape must be 1D or 2D");
         }
 
-        Matrix forward(const Matrix &x, bool train) override {
+        inline Matrix forward(const Matrix &x, bool is_training) override {
             return x;
         }
 
-        Matrix backward(const Matrix &x) override {
+        inline Matrix backward(const Matrix &x) override {
             return {};
         }
 
@@ -119,7 +118,7 @@ namespace Layer {
             initialized = true;
         }
 
-        Matrix forward(const Matrix &x, bool train) override {
+        inline Matrix forward(const Matrix &x, bool is_training) override {
             if (!initialized) {
                 input_shape_ = {-1, int(x.cols())};    /// -1 means unknown batch_size
                 build(input_shape_);
@@ -129,7 +128,7 @@ namespace Layer {
             return activation_->forward(output_);
         }
 
-        Matrix backward(const Matrix &x) override {
+        inline Matrix backward(const Matrix &x) override {
             delta_ = activation_->backward(x);
             return delta_ * weights_.transpose();
         }
@@ -146,7 +145,6 @@ namespace Layer {
             return input_shape_[1] * units_ + units_;
         }
 
-    public:
         int units_;
         bool initialized = false;
         value_type learning_rate_ = 0.;
@@ -163,8 +161,8 @@ namespace Layer {
                 throw std::invalid_argument("Dropout rate must be in [0, 1]");
         }
 
-        Matrix forward(const Matrix &x, bool train = true) override {
-            if (train) {
+        inline Matrix forward(const Matrix &x, bool is_training) override {
+            if (is_training) {
                 std::random_device rd;
                 std::mt19937 gen(rd());
                 std::bernoulli_distribution dist(1. - rate_);
@@ -177,7 +175,7 @@ namespace Layer {
             }
         }
 
-        Matrix backward(const Matrix &x) override {
+        inline Matrix backward(const Matrix &x) override {
             return x.cwiseProduct(mask_);
         }
 
@@ -193,7 +191,6 @@ namespace Layer {
             return 0;
         }
 
-//    private:
         value_type rate_;
         Matrix mask_;
     };

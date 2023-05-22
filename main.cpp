@@ -21,27 +21,30 @@ int main() {
     fmt::print("\n");
     auto model = Model::Sequential();
     model.add(new Input({784}));
-    model.add(new Dense(128, "relu", 5e-1));
+    model.add(new Dense(256, "relu", 2e-1));
     model.add(new Dropout(0.5));
-    model.add(new Dense(10, "softmax", 2e-1));
-    model.compile(new Optimizer::SGD(), new Loss::MeanSquaredError());
+    model.add(new Dense(10, "softmax", 5e-2));
+    model.compile(new Optimizer::SGD(), new Loss::BinaryCrossEntropy());
     model.summary();
 
     fmt::print("\n");
-    model.fit(train_data, train_label, 250, 32);
+    model.fit(train_data, train_label, 150, 32);
 
     auto test_pred = model.predict(test_data);
     fmt::print("\ntest accuracy: {:.4f}%\n", Utils::accuracy(test_pred, test_label) * 100.);
     fmt::print("test loss: {:.6f}\n", Loss::MeanSquaredError::loss(test_pred, test_label));
 
     fmt::print("\nPress C to clear the canvas, press Esc to exit.\n");
-    Matrix canvas = Matrix::Zero(28 * 28, 28 * 28);
-    int pred_cnt = 0;
-    Painter::draw(784, 784, canvas, [&canvas, &model, &pred_cnt]() {
+
+    int height = 28 * 28, width = 28 * 28;
+    Matrix canvas = Matrix::Zero(height, width);
+    Painter::draw(height, width, canvas, [&]() {
         Matrix resized = Utils::resize(canvas, 28, 28) / 255.;
         resized = Utils::reshape(resized, {1, 28 * 28});
         Matrix pred = model.predict(resized);
-        fmt::print("{}th prediction: {}\n", ++pred_cnt, Utils::argmax(pred, 1)(0));
+        int pred_label = int(Utils::argmax(pred, 1)(0));
+        float pred_prob = pred(0, pred_label);
+        fmt::print("Prediction: {}, probability: {:.2f}%{}\r", pred_label, pred_prob * 100., string(20, ' '));
     });
 
 

@@ -20,10 +20,9 @@ namespace Model {
     using Eigen::AutoOrder;
 //    using Tensor = Eigen::Tensor<value_type, Dynamic>;
 
-/// TODO:
     class Model {
     public:
-        Model() {}
+        Model() = default;
         virtual void summary() = 0;
         virtual void compile(Optimizer::Optimizer *optimizer, Loss::Loss *loss) = 0;
 
@@ -39,7 +38,7 @@ namespace Model {
 
     class Sequential : public Model {
     public:
-        Sequential() {}
+        Sequential() = default;
 
         template<typename T>
         void add(T *layer) {
@@ -153,8 +152,8 @@ namespace Model {
 
     private:
         std::vector<Layer::Layer *> layers_;
-        Optimizer::Optimizer *optimizer_;
-        Loss::Loss *loss_;
+        Optimizer::Optimizer *optimizer_ = nullptr;
+        Loss::Loss *loss_ = nullptr;
     };
 }
 

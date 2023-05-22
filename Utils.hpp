@@ -9,7 +9,7 @@
 
 namespace Utils {
 
-    string to_string(const Shape &shape) {
+    inline string to_string(const Shape &shape) {
         string s = "(";
         for (auto i: shape)
             s += (i == -1 ? "None" : std::to_string(i)) + ", ";
@@ -19,7 +19,7 @@ namespace Utils {
         return s;
     }
 
-    string progress_bar(int current, int total, int bar_length = 20) {
+    inline string progress_bar(int current, int total, int bar_length = 35) {
         string current_str = std::to_string(current);
         string total_str = std::to_string(total);
         int pos = bar_length * current / total;
@@ -34,7 +34,7 @@ namespace Utils {
                 string(pos, '=') + ">" + string(bar_length - pos - 1, '.') + "]";
     }
 
-    string time_format(double ms) {
+    inline string time_format(double ms) {
         if (ms < 1000) return fmt::format("{:.2f}ms", ms);
         else if (ms < 60 * 1000) {
             int s = ms / 1000;
@@ -57,7 +57,7 @@ namespace Utils {
         }
     }
 
-    Matrix argmax(const Matrix &x, int axis) {
+    inline Matrix argmax(const Matrix &x, int axis) {
         if (axis == 0) {
             Matrix result(x.cols(), 1);
             for (int i = 0; i < x.cols(); ++i) {
@@ -85,7 +85,7 @@ namespace Utils {
         }
     }
 
-    value_type accuracy(const Matrix &pred, const Matrix &ground_truth, bool onehot = true) {
+    inline value_type accuracy(const Matrix &pred, const Matrix &ground_truth, bool onehot = true) {
         if (onehot) {
             Matrix pred_label = argmax(pred, 1);
             Matrix true_label = argmax(ground_truth, 1);
