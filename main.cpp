@@ -44,7 +44,7 @@ int main() {
         Matrix pred = model.predict(resized);
         int pred_label = int(Utils::argmax(pred, 1)(0));
         float pred_prob = pred(0, pred_label);
-        fmt::print("Prediction: {}, probability: {:.2f}%{}\r", pred_label, pred_prob * 100., string(20, ' '));
+        fmt::print("Prediction: {}, probability: {:.4f}\r", pred_label, pred_prob);
     });
 
 
