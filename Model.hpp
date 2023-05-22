@@ -110,7 +110,7 @@ namespace Model {
                     value_type loss     = loss_->forward(y_pred, y_batch);
                     total_loss          += loss;
                     total_accuracy      += accuracy;
-                    backward(loss_->backward(y_pred, y_batch));
+                    backward((y_pred - y_batch) / value_type(batch_size));
                     update();
                     auto now = std::chrono::system_clock::now();
                     double elapsed = double(std::chrono::duration_cast<std::chrono::microseconds>(now - start).count());

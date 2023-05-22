@@ -11,10 +11,6 @@ namespace Loss {
     class Loss {
     public:
         virtual inline value_type forward(const Matrix &y_pred, const Matrix &y_true) = 0;
-
-        virtual inline Matrix backward(const Matrix &y_pred, const Matrix &y_true) {
-            return (y_pred - y_true) / y_pred.rows();
-        };
     };
 
     class MeanAbsoluteError : public Loss {
