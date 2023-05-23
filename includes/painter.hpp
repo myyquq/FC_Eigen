@@ -26,9 +26,9 @@ namespace Painter {
 
     void onMouse(int event, int x, int y, int flags, void* userdata) {
         if (event == cv::EVENT_LBUTTONDOWN) {
-            cv::circle(canvas, cv::Point(x, y), WIDTH * BRUSH_WIDTH_SCALE, brushColor, -1);  // 在画布上绘制黑色点
+            cv::circle(canvas, cv::Point(x, y), WIDTH * BRUSH_WIDTH_SCALE, brushColor, -1);
         } else if (event == cv::EVENT_MOUSEMOVE && (flags & cv::EVENT_FLAG_LBUTTON)) {
-            cv::circle(canvas, cv::Point(x, y), WIDTH * BRUSH_WIDTH_SCALE, brushColor, -1);  // 在画布上绘制黑色点
+            cv::circle(canvas, cv::Point(x, y), WIDTH * BRUSH_WIDTH_SCALE, brushColor, -1);
         } else if (event == cv::EVENT_LBUTTONUP) {
             call();
         }
@@ -57,8 +57,6 @@ namespace Painter {
         cv::namedWindow(windowName);
         cv::setMouseCallback(windowName, onMouse);
 
-
-
         while (true) {
             cv::imshow(windowName, canvas);
 
@@ -70,7 +68,6 @@ namespace Painter {
             }
         }
     }
-
 }
 
 

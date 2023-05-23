@@ -35,9 +35,6 @@ add_subdirectory(
 find_package(OpenCV REQUIRED HINTS ${OpenCV_DIR})
 include_directories(${OpenCV_INCLUDE_DIRS})
 link_libraries(${OpenCV_LIBS})
-message("OpenCV_INCLUDE_DIRS:${OpenCV_INCLUDE_DIRS}")
-message("OpenCV_LIBS:${OpenCV_LIBS}")
-
 
 include_directories(includes)
 
