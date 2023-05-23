@@ -50,8 +50,16 @@ namespace Model {
 
         Matrix forward(const Matrix &x) override {
             Matrix y = x;
-            for (auto layer: layers_) {
+            for (auto &layer: layers_) {
                 y = layer->forward(y, true);
+            }
+            return y;
+        }
+
+        Matrix predict(const Matrix &x) override {
+            Matrix y = x;
+            for (auto &layer: layers_) {
+                y = layer->forward(y, false);
             }
             return y;
         }
@@ -64,7 +72,7 @@ namespace Model {
         }
 
         void update() override {
-            for (auto layer: layers_) {
+            for (auto &layer: layers_) {
                 optimizer_->update(layer);
             }
         }
@@ -132,14 +140,6 @@ namespace Model {
                            string(20, ' ')
                 );
             }
-        }
-
-        Matrix predict(const Matrix &x) override {
-            Matrix y = x;
-            for (auto layer: layers_) {
-                y = layer->forward(y, false);
-            }
-            return y;
         }
 
         int64_t parameters() {

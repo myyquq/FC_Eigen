@@ -35,25 +35,6 @@ namespace Optimizer {
     private:
         double lr_;
     };
-//
-//    class MeanSquaredError: public Optimizer {
-//    public:
-//        MeanSquaredError(double lr = 0.01): lr_(lr) {}
-//        void update(Matrix &w, const Matrix &dw) override {
-//            w -= lr_ * dw;
-//        }
-//        void update(Vector &b, const Vector &db) override {
-//            b -= lr_ * db;
-//        }
-//        Matrix forward(const Matrix &x) override {
-//            return x;
-//        }
-//        string name() override {
-//            return "MeanSquaredError";
-//        }
-//    private:
-//        double lr_;
-//    };
 
 }
 
