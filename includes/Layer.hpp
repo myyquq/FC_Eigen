@@ -19,7 +19,7 @@ namespace Layer {
     class Layer {
     public:
         Layer(string name = "Layer") : name_(std::move(name)) {}
-        virtual inline Matrix forward(const Matrix &x, bool train) = 0;
+        virtual inline Matrix forward(const Matrix &x, bool is_training) = 0;
         virtual inline Matrix backward(const Matrix &x) = 0;
         virtual std::vector<int> input_shape() = 0;
         virtual std::vector<int> output_shape() = 0;
@@ -46,7 +46,7 @@ namespace Layer {
                 throw std::invalid_argument("Input shape must be 1D or 2D");
         }
 
-        inline Matrix forward(const Matrix &x, bool train) override {
+        inline Matrix forward(const Matrix &x, bool is_training) override {
             return x;
         }
 
@@ -67,7 +67,7 @@ namespace Layer {
         }
     };
 
-//    class Flatten: public Layer {   /// currently only support 2D input, deprecated
+//    class Flatten: public Layer {   /// currently only support 2D input, hence deprecated
 //        static int count;
 //    public:
 //        Flatten(): Layer("Flatten" + std::to_string(count++)) {}
@@ -118,7 +118,7 @@ namespace Layer {
             initialized = true;
         }
 
-        inline Matrix forward(const Matrix &x, bool train) override {
+        inline Matrix forward(const Matrix &x, bool is_training) override {
             if (!initialized) {
                 input_shape_ = {-1, int(x.cols())};    /// -1 means unknown batch_size
                 build(input_shape_);
@@ -161,8 +161,8 @@ namespace Layer {
                 throw std::invalid_argument("Dropout rate must be in [0, 1]");
         }
 
-        inline Matrix forward(const Matrix &x, bool train) override {
-            if (train) {
+        inline Matrix forward(const Matrix &x, bool is_training) override {
+            if (is_training) {
                 std::random_device rd;
                 std::mt19937 gen(rd());
                 std::bernoulli_distribution dist(1. - rate_);

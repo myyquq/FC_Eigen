@@ -38,9 +38,10 @@ link_libraries(${OpenCV_LIBS})
 message("OpenCV_INCLUDE_DIRS:${OpenCV_INCLUDE_DIRS}")
 message("OpenCV_LIBS:${OpenCV_LIBS}")
 
-find_package(Threads REQUIRED)
 
-file(GLOB HEADERS "*.hpp" "*.h")
+include_directories(includes)
+
+file(GLOB HEADERS "includes/*.hpp" "includes/*.h")
 
 add_executable(
         ${PROJECT_NAME}
@@ -53,5 +54,4 @@ target_link_libraries(
         PRIVATE
         ${OpenCV_LIBS}
         fmt::fmt
-        Threads::Threads
 )

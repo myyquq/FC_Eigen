@@ -12,7 +12,7 @@ using Layer::Dropout;
 
 int main() {
     Eigen::initParallel();
-    Eigen::setNbThreads(4);
+    Eigen::setNbThreads(2);
     auto [train_data, train_label, test_data, test_label] =
             dataloader::load_mnist("../dataset",true); /// onehot labels
     train_data /= 255.;   /// preprocessing
