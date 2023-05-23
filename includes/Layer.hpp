@@ -151,6 +151,7 @@ namespace Layer {
         Shape output_shape_;
         Matrix weights_, biases_;
         Matrix input_, output_, delta_;
+        std::vector<Matrix> m_, v_;
     };
 
     class Dropout : public Layer {

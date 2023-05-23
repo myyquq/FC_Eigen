@@ -17,6 +17,11 @@ namespace Painter {
 
     cv::Mat canvas;
     cv::Scalar brushColor;
+
+    void clearCanvas() {
+        canvas = cv::Scalar(255, 255, 255);
+    }
+
     std::function<void()> call;
 
     void onMouse(int event, int x, int y, int flags, void* userdata) {
@@ -29,13 +34,22 @@ namespace Painter {
         }
     }
 
-    void clearCanvas() {
-        canvas = cv::Scalar(255, 255, 255);
-    }
-
-    void draw(int height, int width, Matrix &data, const std::function<void()> &notify) {
+    void draw(int height, int width, const std::function<void(Matrix)> &notify) {
         HEIGHT = height;
         WIDTH = width;
+
+        call = [&notify]() {
+            cv::Mat canvasGray;
+            cv::cvtColor(canvas, canvasGray, cv::COLOR_BGR2GRAY);
+            cv::Mat canvasArray = canvasGray > 0;
+            Matrix data = Matrix::Zero(HEIGHT, WIDTH);
+            for (int i = 0; i < HEIGHT; i++) {
+                for (int j = 0; j < WIDTH; j++) {
+                    data(i, j) = 255.f - canvasArray.at<uchar>(i, j);
+                }
+            }
+            notify(data);
+        };
 
         canvas = cv::Mat(HEIGHT, WIDTH, CV_8UC3, cv::Scalar(255, 255, 255));
         cv::String windowName = "Canvas";
@@ -43,18 +57,7 @@ namespace Painter {
         cv::namedWindow(windowName);
         cv::setMouseCallback(windowName, onMouse);
 
-        call = [&data, &notify]() {
-            cv::Mat canvasGray;
-            cv::cvtColor(canvas, canvasGray, cv::COLOR_BGR2GRAY);
-            cv::Mat canvasArray = canvasGray > 0;
-            data = Matrix::Zero(HEIGHT, WIDTH);
-            for (int i = 0; i < HEIGHT; i++) {
-                for (int j = 0; j < WIDTH; j++) {
-                    data(i, j) = 255.f - canvasArray.at<uchar>(i, j);
-                }
-            }
-            notify();
-        };
+
 
         while (true) {
             cv::imshow(windowName, canvas);
