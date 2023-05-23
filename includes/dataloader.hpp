@@ -17,6 +17,12 @@ namespace dataloader {
     using std::string;
 
     // [train_data, train_label, test_data, test_label]
+    /**
+     * @brief Load MNIST dataset from csv files.
+     * @param path: the path of the dataset.
+     * @param one_hot: whether to use one-hot encoding for labels.
+     * @return a tuple of four matrices: train_data, train_label, test_data, test_label.
+     * */
     tuple<Matrix, Matrix, Matrix, Matrix> load_mnist(const string &path, bool one_hot = true) {
         const int train_data_size = 60000;
         const int test_data_size = 10000;

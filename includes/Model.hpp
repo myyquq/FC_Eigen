@@ -40,6 +40,14 @@ namespace Model {
     public:
         Sequential() = default;
 
+        /**
+         * @brief Add a layer to the model.
+         * @param layer: a pointer to the layer
+         * \example
+         * \code
+         * auto *model = new Sequential();
+         * model->add(new Dense(128, "relu"));
+         * */
         template<typename T>
         void add(T *layer) {
             if (!layers_.empty()) {
@@ -48,6 +56,7 @@ namespace Model {
             layers_.push_back(layer);
         }
 
+    private:
         Matrix forward(const Matrix &x) override {
             Matrix y = x;
             for (auto &layer: layers_) {
@@ -56,6 +65,12 @@ namespace Model {
             return y;
         }
 
+    public:
+        /**
+         * @brief Predict the output of the model, should be called after compile and fit.
+         * @param x: the input data
+         * @return: the output of the model
+         * */
         Matrix predict(const Matrix &x) override {
             Matrix y = x;
             for (auto &layer: layers_) {
@@ -64,6 +79,7 @@ namespace Model {
             return y;
         }
 
+    private:
         void backward(const Matrix &x) override {
             Matrix y = x;
             for (auto &layer: std::ranges::reverse_view(layers_)) {
@@ -77,6 +93,10 @@ namespace Model {
             }
         }
 
+    public:
+        /**
+         * @brief Summarize the model, print the information to stdout.
+         * */
         void summary() override {
             fmt::print("Model: Sequential\n");
             fmt::print("_________________________________________________________________\n");
@@ -96,11 +116,23 @@ namespace Model {
             fmt::print("Total params: {}\n", params);
         }
 
+        /**
+         * @brief Compile the model, set the optimizer and loss function.
+         * @param optimizer: a pointer to the optimizer
+         * @param loss: a pointer to the loss function
+         * */
         void compile(Optimizer::Optimizer *optimizer, Loss::Loss *loss) override {
             optimizer_ = optimizer;
             loss_ = loss;
         }
 
+        /**
+         * @brief Train the model, should be called after compile.
+         * @param x: the input data
+         * @param y: the target data
+         * @param epochs: the number of epochs
+         * @param batch_size: the size of each batch
+         * */
         void fit(const Matrix &x, const Matrix &y, int epochs, int batch_size) {
             int n = int(x.rows());
             if (batch_size > n)
@@ -142,6 +174,10 @@ namespace Model {
             }
         }
 
+        /**
+         * @brief Get the number of parameters of the model.
+         * @return: the number of parameters
+         * */
         int64_t parameters() {
             int64_t n = 0;
             for (auto layer: layers_) {

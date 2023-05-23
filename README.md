@@ -25,6 +25,8 @@ Currently tested on [MNIST](http://yann.lecun.com/exdb/mnist/) dataset.
 - Softmax
 - Tanh
 - Linear
+
+Extract dataset.7z to the root directory of the project to run the example.
   
 **Test results:**
 ```     

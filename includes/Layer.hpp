@@ -37,6 +37,11 @@ namespace Layer {
     class Input : public Layer {
         static int count;
     public:
+        /**
+         * @brief Input layer, should be the first layer of the model.
+         * @brief If not called, the model will automatically add an input layer with the shape of the input data.
+         * @param shape: the shape of the input data, should be 1D or 2D.
+         * */
         Input(const Shape &shape) : Layer("Input" + std::to_string(count++)) {
             if (shape.size() == 1)
                 input_shape_ = {-1, shape[0]};
@@ -93,6 +98,14 @@ namespace Layer {
     class Dense : public Layer {
         static int count;
     public:
+        /**
+         * @brief Fully connected layer.
+         * @param units: the number of neurons in the layer.
+         * @param activation: the activation function of the layer,
+         *                    should be one of "relu", "sigmoid", "softmax", "tanh" and "linear".
+         * @param learning_rate: the learning rate of the layer,
+         *                    if not specified, the learning rate of the optimizer will be used.
+         * */
         Dense(int units, string activation, value_type learning_rate = 0.) : Layer("Dense" + std::to_string(count++)) {
             units_ = units;
             learning_rate_ = learning_rate;
@@ -157,6 +170,10 @@ namespace Layer {
     class Dropout : public Layer {
         static int count;
     public:
+        /**
+         * @brief Dropout layer.
+         * @param rate: the dropout rate, should be in [0, 1].
+         * */
         Dropout(value_type rate) : Layer("Dropout" + std::to_string(count++)), rate_(rate) {
             if (rate_ < 0 || rate_ > 1)
                 throw std::invalid_argument("Dropout rate must be in [0, 1]");

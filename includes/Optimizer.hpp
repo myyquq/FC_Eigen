@@ -20,6 +20,10 @@ namespace Optimizer {
 
     class SGD : public Optimizer {
     public:
+        /**
+         * @brief Stochastic Gradient Descent optimizer.
+         * @param lr: learning rate
+         * */
         SGD(double lr = 0.01) : lr_(lr) {}
 
         void update(Layer::Layer *layer) override {

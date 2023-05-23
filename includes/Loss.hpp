@@ -17,6 +17,11 @@ namespace Loss {
     public:
         MeanAbsoluteError() = default;
 
+        /**
+         * @brief Calculate the mean absolute error between y_pred and y_true.
+         * @param y_pred: the predicted value
+         * @param y_true: the true value
+         * */
         static value_type loss(const Matrix &y_pred, const Matrix &y_true) {
             return (y_pred - y_true).cwiseAbs().sum() / y_pred.rows();
         }
@@ -30,6 +35,11 @@ namespace Loss {
     public:
         MeanSquaredError() = default;
 
+        /**
+         * @brief Calculate the mean squared error between y_pred and y_true.
+         * @param y_pred: the predicted value
+         * @param y_true: the true value
+         * */
         static value_type loss(const Matrix &y_pred, const Matrix &y_true) {
             return (y_pred - y_true).squaredNorm() / y_pred.rows();
         }
@@ -43,9 +53,13 @@ namespace Loss {
     public:
         BinaryCrossEntropy() = default;
 
-        /// yTrue×log(y)+(1-yTrue)×log(1-y)
+        /**
+         * @brief Calculate the binary cross entropy between y_pred and y_true.
+         * @param y_pred: the predicted value
+         * @param y_true: the true value
+         * */
         static value_type loss(const Matrix &y_pred, const Matrix &y_true) {
-            Matrix clipped_y_pred = y_pred.cwiseMax(1e-7).cwiseMin(1 - 1e-7);
+            Matrix clipped_y_pred = y_pred.cwiseMax(EPSILON).cwiseMin(1 - EPSILON);
             return -(y_true.array() * clipped_y_pred.array().log() +
                      (1 - y_true.array()) * (1 - clipped_y_pred.array()).log()).sum() / y_pred.rows();
         }
@@ -55,6 +69,8 @@ namespace Loss {
             return -(y_true.array() * clipped_y_pred.array().log() +
                      (1 - y_true.array()) * (1 - clipped_y_pred.array()).log()).sum() / y_pred.rows();
         }
+
+        static constexpr value_type EPSILON = 1e-7;
     };
 }
 
