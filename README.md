@@ -35,14 +35,14 @@ large batch size, slow convergence:
            accuracy: approximately 91%
      Dense(128, sigmoid, 0.5) -> Dropout(0.5) -> Dense(10, softmax, 0.2) @ 250 epochs, 1024 batch size
            accuracy: approximately 92%
-     Dense(128, relu   , 0.5) -> Dropout(0.2) -> Dense(32, relu   , 0.2) -> Dropout(0.2) -> Dense(10, softmax, 0.2) @ 150 epochs, 1024 batch size
+     Dense(128, relu,    0.5) -> Dropout(0.2) -> Dense(32, relu,    0.2) -> Dropout(0.2) -> Dense(10, softmax, 0.2) @ 150 epochs, 1024 batch size
            accuracy: approximately 93%
-     Dense(128, relu   , 0.5) -> Dropout(0.5) -> Dense(10, softmax, 0.2) @ 250 epochs, 1024 batch size
+     Dense(128, relu,    0.5) -> Dropout(0.5) -> Dense(10, softmax, 0.2) @ 250 epochs, 1024 batch size
            accuracy: approximately 94%
            
 small batch size, fast convergence, but easily overfit:
      Dense(128, sigmoid, 0.5) -> Dropout(0.5) -> Dense(10, softmax, 0.2) @ 100 epochs, 32 batch size
            accuracy: approximately 96%
-     Dense(128, relu   , 0.5) -> Dropout(0.5) -> Dense(10, softmax, 0.2) @ 100 epochs, 32 batch size
+     Dense(128, relu,    0.5) -> Dropout(0.5) -> Dense(10, softmax, 0.2) @ 100 epochs, 32 batch size
            accuracy: approximately 97%
 ```
